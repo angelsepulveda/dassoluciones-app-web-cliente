@@ -4,4 +4,5 @@ export * from './Input';
 export * from './ConfirmationModal';
 export * from './Modal';
 export * from './SideAlert';
-export * from './DataGrid'
+export * from './DataGrid';
+export * from './SearchGrid';
