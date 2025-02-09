@@ -1,15 +1,5 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import {
-  Edit,
-  Trash2,
-  Plus,
-  ChevronLeft,
-  ChevronRight,
-  Loader2,
-} from 'lucide-react';
-import { useModules } from '@/hooks/useModules';
 import {
   Button,
   ConfirmationModal,
@@ -19,8 +9,18 @@ import {
   SideAlert,
   TColumn,
 } from '@/components';
-import { TModule } from '@/models';
-import ModuleForm from './ModuleForm';
+import { useActions } from '@/hooks/useActions';
+import { TAction } from '@/models';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Edit,
+  Loader2,
+  Plus,
+  Trash2,
+} from 'lucide-react';
+import { useMemo, useState } from 'react';
+import ActionForm from './ActionForm';
 
 interface AlertState {
   message: string;
@@ -32,19 +32,19 @@ type SortOrder = 'asc' | 'desc';
 
 const ITEMS_PER_PAGE = 5;
 
-export default function UserManagement() {
+export default function ActionManagement() {
   const {
-    modules,
+    actions,
     isLoading,
     isError,
-    createModule,
-    updateModule,
-    deleteModule,
-  } = useModules();
+    createAction,
+    updateAction,
+    deleteAction,
+  } = useActions();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [moduleToDelete, setModuleToDelete] = useState<string | null>(null);
-  const [currentModule, setCurrentModule] = useState<TModule | null>(null);
+  const [actionToDelete, setActionToDelete] = useState<string | null>(null);
+  const [currentAction, setCurrentAction] = useState<TAction | null>(null);
   const [alert, setAlert] = useState<AlertState | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortField, setSortField] = useState<SortField>('name');
@@ -55,16 +55,16 @@ export default function UserManagement() {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const filteredAndSortedUsers = useMemo(() => {
-    return (modules || [])
-      .filter((user) =>
-        user.name.toLowerCase().includes(appliedSearchTerm.toLowerCase())
+    return (actions || [])
+      .filter((action) =>
+        action.name.toLowerCase().includes(appliedSearchTerm.toLowerCase())
       )
       .sort((a, b) => {
         if (a[sortField] < b[sortField]) return sortOrder === 'asc' ? -1 : 1;
         if (a[sortField] > b[sortField]) return sortOrder === 'asc' ? 1 : -1;
         return 0;
       });
-  }, [modules, sortField, sortOrder, appliedSearchTerm]);
+  }, [actions, sortField, sortOrder, appliedSearchTerm]);
 
   const totalPages = Math.ceil(filteredAndSortedUsers.length / ITEMS_PER_PAGE);
 
@@ -77,28 +77,28 @@ export default function UserManagement() {
   }, [filteredAndSortedUsers, currentPage]);
 
   const handleCreate = () => {
-    setCurrentModule(null);
+    setCurrentAction(null);
     setIsModalOpen(true);
   };
 
-  const handleEdit = (module: TModule) => {
-    setCurrentModule(module);
+  const handleEdit = (action: TAction) => {
+    setCurrentAction(action);
     setIsModalOpen(true);
   };
 
   const handleDeleteConfirmation = (id: string) => {
-    setModuleToDelete(id);
+    setActionToDelete(id);
     setIsConfirmModalOpen(true);
   };
 
   const handleDelete = (): void => {
-    if (moduleToDelete !== null) {
+    if (actionToDelete !== null) {
       setIsDeleting(true);
       try {
-        deleteModule(moduleToDelete)
+        deleteAction(actionToDelete)
           .then((result) => {
             setAlert({
-              message: 'Modulo eliminado exitosamente',
+              message: 'Accion eliminada exitosamente',
               type: 'success',
             });
             if (currentModules.length === 1 && currentPage > 1) {
@@ -106,35 +106,34 @@ export default function UserManagement() {
             }
           })
           .catch((error) => {
-            setAlert({ message: 'Ha fallado la eliminación', type: 'error' });
-            setIsDeleting(false);
+            setAlert({ message: 'Ha fallado la eliminacion', type: 'error' });
           });
       } catch (error) {
-        setAlert({ message: 'Ha fallado la eliminación', type: 'error' });
+        setAlert({ message: 'Ha fallado la eliminacion', type: 'error' });
       } finally {
         setIsDeleting(false);
       }
     }
     setIsConfirmModalOpen(false);
-    setModuleToDelete(null);
+    setActionToDelete(null);
   };
 
-  const handleSubmit = async (moduleData: Omit<TModule, 'id'>) => {
+  const handleSubmit = async (data: Omit<TAction, 'id'>) => {
     setIsSubmitting(true);
     try {
-      if (currentModule) {
-        await updateModule({
-          ...moduleData,
-          id: currentModule.id,
+      if (currentAction) {
+        await updateAction({
+          ...data,
+          id: currentAction.id,
         });
         setAlert({
-          message: 'Modulo actualizado exitosamente',
+          message: 'acción actualizado exitosamente',
           type: 'success',
         });
       } else {
-        await createModule(moduleData);
+        await createAction(data);
         setAlert({
-          message: 'Modulo registrado exitosamente',
+          message: 'Acción registrado exitosamente',
           type: 'success',
         });
         setCurrentPage(
@@ -143,7 +142,7 @@ export default function UserManagement() {
       }
       setIsModalOpen(false);
     } catch (error) {
-      setAlert({ message: 'Ha fallado el registro', type: 'error' });
+      setAlert({ message: 'Ha fallado', type: 'error' });
     } finally {
       setIsSubmitting(false);
     }
@@ -209,14 +208,14 @@ export default function UserManagement() {
     <div className="flex justify-center items-center py-8">
       <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
       <span className="ml-2 text-gray-600 dark:text-gray-400">
-        Cargando módulos...
+        Cargando acciones...
       </span>
     </div>
   );
 
-  const columns: TColumn<TModule>[] = [{ key: 'name', header: 'Nombre' }];
+  const columns: TColumn<TAction>[] = [{ key: 'name', header: 'Nombre' }];
 
-  const renderActions = (module: TModule) => (
+  const renderActions = (module: TAction) => (
     <>
       <Button
         variant="ghost"
@@ -241,7 +240,7 @@ export default function UserManagement() {
   if (isError) {
     return (
       <div className="text-center py-8 text-red-500">
-        Error en carga de modulos
+        Error en carga de acciones
       </div>
     );
   }
@@ -258,10 +257,10 @@ export default function UserManagement() {
 
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
-          Módulos
+          Acciones
         </h2>
         <Button onClick={handleCreate} icon={<Plus size={18} />}>
-          Registar módulo
+          Registar acción
         </Button>
       </div>
       <SearchGrid
@@ -326,10 +325,10 @@ export default function UserManagement() {
       )}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
-          {currentModule ? 'Editar módulos' : 'Registrar nuevo módulo'}
+          {currentAction ? 'Editar acciones' : 'Registrar nuevo acción'}
         </h2>
-        <ModuleForm
-          module={currentModule}
+        <ActionForm
+          action={currentAction}
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}
         />
@@ -342,7 +341,7 @@ export default function UserManagement() {
         confirmText="Eliminar"
         text="Eliminar"
         cancelText="Cancelar"
-        message="¿Está seguro que desea eliminar este módulo? Esta acción no se puede deshacer."
+        message="¿Está seguro que desea eliminar esta acción? Esta acción no se puede deshacer."
         isDeleting={isDeleting}
       />
     </div>

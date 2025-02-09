@@ -21,8 +21,8 @@ export async function POST (request: Request) {
 		const createdModule = await moduleApiService.register(newModule)
 		return NextResponse.json(createdModule, { status: 201 })
 	} catch (error) {
-		console.error("Failed to create user:", error)
-		return NextResponse.json({ error: "Failed to create user" }, { status: 500 })
+		console.error("Failed to create module:", error)
+		return NextResponse.json({ error: "Failed to create module" }, { status: 500 })
 	}
 }
 
@@ -32,8 +32,8 @@ export async function PUT (request: Request) {
 		const result = await moduleApiService.update(updatedUser)
 		return NextResponse.json(result)
 	} catch (error) {
-		console.error("Failed to update user:", error)
-		return NextResponse.json({ error: "Failed to update user" }, { status: 500 })
+		console.error("Failed to update module:", error)
+		return NextResponse.json({ error: "Failed to update module" }, { status: 500 })
 	}
 }
 
@@ -42,9 +42,9 @@ export async function DELETE (request: Request) {
 		const { searchParams } = new URL(request.url)
 		const id = String(searchParams.get("id"))
 		await moduleApiService.delete(id)
-		return NextResponse.json({ message: "User deleted successfully" })
+		return NextResponse.json({ message: "Module deleted successfully" })
 	} catch (error) {
-		console.error("Failed to delete user:", error)
-		return NextResponse.json({ error: "Failed to delete user" }, { status: 500 })
+		console.error("Failed to delete module:", error)
+		return NextResponse.json({ error: "Failed to delete module" }, { status: 500 })
 	}
 }
