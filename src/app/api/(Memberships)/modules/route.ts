@@ -9,7 +9,6 @@ export async function GET () {
 		const modules = await moduleApiService.getAll()
 		return NextResponse.json(modules)
 	} catch (error) {
-		debugger;
 		console.error("Failed to fetch module:", error)
 		return NextResponse.json({ error: moduleApiService }, { status: 500 })
 	}

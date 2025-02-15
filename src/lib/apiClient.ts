@@ -26,7 +26,7 @@ export class ApiClient {
 	private async request<T> (endpoint: string, options: RequestOptions): Promise<T> {
 		const url = `${this.baseUrl}${endpoint}`
 		const headers = { ...this.headers, ...options.headers }
-
+		debugger;
 		const response = await fetch(url, {
 			method: options.method,
 			headers,
@@ -41,19 +41,19 @@ export class ApiClient {
 	}
 
 	async get<T> (endpoint: string, headers?: Record<string, string>): Promise<T> {
-		return this.request<T>(endpoint, { method: "GET", headers })
+		return await this.request<T>(endpoint, { method: "GET", headers })
 	}
 
 	async post<T> (endpoint: string, body: any, headers?: Record<string, string>): Promise<T> {
-		return this.request<T>(endpoint, { method: "POST", body, headers })
+		return await this.request<T>(endpoint, { method: "POST", body, headers })
 	}
 
 	async put<T> (endpoint: string, body: any, headers?: Record<string, string>): Promise<T> {
-		return this.request<T>(endpoint, { method: "PUT", body, headers })
+		return await this.request<T>(endpoint, { method: "PUT", body, headers })
 	}
 
 	async delete<T> (endpoint: string, headers?: Record<string, string>): Promise<T> {
-		return this.request<T>(endpoint, { method: "DELETE", headers })
+		return await this.request<T>(endpoint, { method: "DELETE", headers })
 	}
 
 	setToken (token: string) {

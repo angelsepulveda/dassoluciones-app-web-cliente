@@ -9,21 +9,21 @@ export class ModuleApiService extends BaseService {
 	}
 
 	async getAll () {
-		return this.apiClient.get<TModule[]>("/get-all")
+		return await this.apiClient.get<TModule[]>("/get-all")
 	}
 
 	async register (module: Omit<TModule, "id">) {
-		return this.apiClient.post<TModule>("/register", module)
+		return await this.apiClient.post<TModule>("/register", module)
 	}
 
 	async update (module: TModule) {
-		this.apiClient.put<number>('/update', module)
+		await this.apiClient.put<number>('/update', module)
 
 		return module;
 	}
 
 	async delete (id: string) {
-		this.apiClient.delete(`/delete/ ${id}`)
+		await this.apiClient.delete(`/delete/ ${id}`)
 		return id;
 	}
 }

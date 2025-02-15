@@ -9,7 +9,6 @@ import {
   ChevronRight,
   Loader2,
 } from 'lucide-react';
-import { useModules } from '@/hooks/useModules';
 import {
   Button,
   ConfirmationModal,
@@ -21,6 +20,7 @@ import {
 } from '@/components';
 import { TModule } from '@/models';
 import ModuleForm from './ModuleForm';
+import { useModules } from '@/hooks';
 
 interface AlertState {
   message: string;
@@ -94,17 +94,26 @@ export default function UserManagement() {
   const handleDelete = (): void => {
     if (moduleToDelete !== null) {
       setIsDeleting(true);
-      try {
-        deleteModule(moduleToDelete);
-        setAlert({ message: 'User deleted successfully', type: 'success' });
-        if (currentModules.length === 1 && currentPage > 1) {
-          setCurrentPage(currentPage - 1);
-        }
-      } catch (error) {
-        setAlert({ message: 'Failed to delete user', type: 'error' });
-      } finally {
-        setIsDeleting(false);
-      }
+
+      deleteModule(moduleToDelete)
+        .then((result) => {
+          setAlert({
+            message: 'Sección eliminada correctamente',
+            type: 'success',
+          });
+          if (currentModules.length === 1 && currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+          }
+        })
+        .catch((error) => {
+          setAlert({
+            message: 'Falló la eliminación de la sección',
+            type: 'error',
+          });
+        })
+        .finally(() => {
+          setIsDeleting(false);
+        });
     }
     setIsConfirmModalOpen(false);
     setModuleToDelete(null);
@@ -112,25 +121,39 @@ export default function UserManagement() {
 
   const handleSubmit = async (moduleData: Omit<TModule, 'id'>) => {
     setIsSubmitting(true);
-    try {
-      if (currentModule) {
-        await updateModule({
-          ...moduleData,
-          id: currentModule.id,
+
+    if (currentModule) {
+      updateModule({
+        ...moduleData,
+        id: currentModule.id,
+      })
+        .then((result) => {
+          setAlert({
+            message: 'modulo actualizado exitosamente',
+            type: 'success',
+          });
+          setIsSubmitting(false);
+          setIsModalOpen(false);
+        })
+        .catch((error) => {
+          setAlert({ message: 'Failed to update module', type: 'error' });
         });
-        setAlert({ message: 'modactualizado exitosamente', type: 'success' });
-      } else {
-        await createModule(moduleData);
-        setAlert({ message: 'User created successfully', type: 'success' });
-        setCurrentPage(
-          Math.ceil((filteredAndSortedUsers.length + 1) / ITEMS_PER_PAGE)
-        );
-      }
-      setIsModalOpen(false);
-    } catch (error) {
-      setAlert({ message: 'Failed to save user', type: 'error' });
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      createModule(moduleData)
+        .then((result) => {
+          setAlert({
+            message: 'Modulo registrado exitosamente',
+            type: 'success',
+          });
+          setCurrentPage(
+            Math.ceil((filteredAndSortedUsers.length + 1) / ITEMS_PER_PAGE)
+          );
+          setIsSubmitting(false);
+          setIsModalOpen(false);
+        })
+        .catch((error) => {
+          setAlert({ message: 'Failed to save module', type: 'error' });
+        });
     }
   };
 

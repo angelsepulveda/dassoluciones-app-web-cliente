@@ -6,3 +6,4 @@ export * from './Modal';
 export * from './SideAlert';
 export * from './DataGrid';
 export * from './SearchGrid';
+export * from './PaginationButtons';
