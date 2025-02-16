@@ -9,7 +9,6 @@ export async function GET () {
 		const sections = await sectionApiService.getAll()
 		return NextResponse.json(sections)
 	} catch (error) {
-		debugger;
 		console.error("Failed to fetch section:", error)
 		return NextResponse.json({ error: sectionApiService }, { status: 500 })
 	}

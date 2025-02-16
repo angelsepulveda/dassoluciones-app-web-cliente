@@ -26,7 +26,6 @@ export class ApiClient {
 	private async request<T> (endpoint: string, options: RequestOptions): Promise<T> {
 		const url = `${this.baseUrl}${endpoint}`
 		const headers = { ...this.headers, ...options.headers }
-		debugger;
 		const response = await fetch(url, {
 			method: options.method,
 			headers,

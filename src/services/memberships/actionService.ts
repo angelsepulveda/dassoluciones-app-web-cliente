@@ -1,40 +1,40 @@
-import { TRegisterSection, TSection } from "@/models"
+import { TAction, TRegisterAction } from "@/models"
 
-const API_URL = "/api/sections"
+const API_URL = "/api/actions"
 
-export const sectionService = {
-	async getAll (): Promise<TSection[]> {
+export const actionService = {
+	async getAll (): Promise<TAction[]> {
 		const response = await fetch(API_URL)
 		if (!response.ok) {
-			throw new Error("Failed to fetch sections")
+			throw new Error("Failed to fetch actions")
 		}
 		return response.json()
 	},
 
-	async create (section: TRegisterSection): Promise<TSection> {
+	async create (action: TRegisterAction): Promise<TAction> {
 		const response = await fetch(API_URL, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(section),
+			body: JSON.stringify(action),
 		})
 		if (!response.ok) {
-			throw new Error("Failed to register section")
+			throw new Error("Failed to register action")
 		}
 		return response.json()
 	},
 
-	async update (section: TSection): Promise<TSection> {
+	async update (action: TAction): Promise<TAction> {
 		const response = await fetch(API_URL, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(section),
+			body: JSON.stringify(action),
 		})
 		if (!response.ok) {
-			throw new Error("Failed to update section")
+			throw new Error("Failed to update action")
 		}
 		return response.json()
 	},
@@ -44,7 +44,7 @@ export const sectionService = {
 			method: "DELETE",
 		})
 		if (!response.ok) {
-			throw new Error("Failed to delete section")
+			throw new Error("Failed to delete action")
 		}
 	},
 }
