@@ -14,6 +14,7 @@ import {
   ConfirmationModal,
   DataGrid,
   Modal,
+  NoDataMessage,
   SearchGrid,
   SideAlert,
   TColumn,
@@ -294,20 +295,27 @@ export default function UserManagement() {
               actions={renderActions}
             />
           </div>
-
           {/* Cards para pantallas móviles */}
           <div className="md:hidden space-y-4">
-            {currentModules.map((module) => (
-              <div
-                key={module.id}
-                className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 transition duration-150 ease-in-out"
-              >
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
-                  {module.name}
-                </h3>
-                <div className="flex justify-end">{renderActions(module)}</div>
+            {currentModules.length === 0 && (
+              <div className="md:hidden space-y-4">
+                <NoDataMessage />
               </div>
-            ))}
+            )}
+            {currentModules.length > 0 &&
+              currentModules.map((module) => (
+                <div
+                  key={module.id}
+                  className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 transition duration-150 ease-in-out"
+                >
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
+                    {module.name}
+                  </h3>
+                  <div className="flex justify-end">
+                    {renderActions(module)}
+                  </div>
+                </div>
+              ))}
           </div>
 
           {/* Pagination controls */}

@@ -1,5 +1,6 @@
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import { ReactNode } from 'react';
+import { NoDataMessage } from './NoDataMessage';
 
 export type TColumn<T> = {
   key: keyof T;
@@ -32,6 +33,10 @@ export function DataGrid<T>({
       <ChevronDown size={18} />
     );
   };
+
+  if (data.length === 0) {
+    return <NoDataMessage />;
+  }
 
   return (
     <div className="overflow-x-auto">

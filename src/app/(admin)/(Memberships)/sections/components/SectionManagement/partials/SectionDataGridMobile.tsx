@@ -1,3 +1,4 @@
+import { NoDataMessage } from '@/components';
 import { TSection } from '@/models';
 import { JSX } from 'react';
 
@@ -10,6 +11,14 @@ export const SectionDataGridMobile = ({
   sections,
   renderActions,
 }: TSectionDataGridMobileProps) => {
+  if (sections.length === 0) {
+    return (
+      <div className="md:hidden space-y-4">
+        <NoDataMessage />
+      </div>
+    );
+  }
+
   return (
     <div className="md:hidden space-y-4">
       {sections.map((section) => (
