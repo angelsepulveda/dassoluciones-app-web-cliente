@@ -1,9 +1,16 @@
 import { useSections } from '@/hooks';
 import { TRegisterSection, TSection } from '@/models';
 import { AlertState, SortField, SortOrder } from '@/types';
-import { useMemo, useState } from 'react';
-
-const ITEMS_PER_PAGE = 5;
+import { ITEMS_PER_PAGE } from '@/utils';
+import { useMemo, useState, useCallback } from 'react';
+import {
+  ERROR_CREATE_MESSAGE,
+  ERROR_DELETE_MESSAGE,
+  ERROR_UPDATE_MESSAGE,
+  SUCCESS_CREATE_MESSAGE,
+  SUCCESS_DELETE_MESSAGE,
+  SUCCESS_UPDATE_MESSAGE,
+} from '../../utils';
 
 export function useSectionManagement() {
   const {
@@ -30,12 +37,10 @@ export function useSectionManagement() {
   const filteredAndSortedUsers = useMemo(() => {
     return (sections || [])
       .filter(
-        (data) =>
-          data.name.toLowerCase().includes(appliedSearchTerm.toLowerCase()) ||
-          data.key.toLowerCase().includes(appliedSearchTerm.toLowerCase()) ||
-          data.description
-            ?.toLowerCase()
-            .includes(appliedSearchTerm.toLowerCase())
+        ({ name, key, description }) =>
+          name.toLowerCase().includes(appliedSearchTerm.toLowerCase()) ||
+          key.toLowerCase().includes(appliedSearchTerm.toLowerCase()) ||
+          description?.toLowerCase().includes(appliedSearchTerm.toLowerCase())
       )
       .sort((a, b) => {
         if (a[sortField] < b[sortField]) return sortOrder === 'asc' ? -1 : 1;
@@ -54,38 +59,38 @@ export function useSectionManagement() {
     );
   }, [filteredAndSortedUsers, currentPage]);
 
-  const handleCreate = () => {
+  const handleCreate = useCallback(() => {
     setCurrentData(null);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const handleEdit = (data: TSection) => {
+  const handleEdit = useCallback((data: TSection) => {
     setCurrentData(data);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const handleDeleteConfirmation = (id: string) => {
+  const handleDeleteConfirmation = useCallback((id: string) => {
     setSectionToDelete(id);
     setIsConfirmModalOpen(true);
-  };
+  }, []);
 
-  const handleDelete = (): void => {
+  const handleDelete = useCallback((): void => {
     if (sectionToDelete !== null) {
       setIsDeleting(true);
 
       deleteSection(sectionToDelete)
-        .then((result) => {
+        .then(() => {
           setAlert({
-            message: 'Sección eliminada correctamente',
+            message: SUCCESS_DELETE_MESSAGE,
             type: 'success',
           });
           if (currentSections.length === 1 && currentPage > 1) {
             setCurrentPage(currentPage - 1);
           }
         })
-        .catch((error) => {
+        .catch(() => {
           setAlert({
-            message: 'Falló la eliminación de la sección',
+            message: ERROR_DELETE_MESSAGE,
             type: 'error',
           });
         })
@@ -95,69 +100,64 @@ export function useSectionManagement() {
     }
     setIsConfirmModalOpen(false);
     setSectionToDelete(null);
-  };
+  }, [sectionToDelete, deleteSection, currentSections.length, currentPage]);
 
-  const handleSubmit = async (data: TRegisterSection) => {
-    setIsSubmitting(true);
+  const handleSubmit = useCallback(
+    async (data: TRegisterSection) => {
+      setIsSubmitting(true);
 
-    if (currentData) {
-      updateSection({
-        ...data,
-        id: currentData.id,
-      })
-        .then((result) => {
-          setAlert({
-            message: 'Sección actualizado exitosamente',
-            type: 'success',
-          });
+      const action = currentData ? updateSection : createSection;
+      const successMessage = currentData
+        ? SUCCESS_UPDATE_MESSAGE
+        : SUCCESS_CREATE_MESSAGE;
+      const errorMessage = currentData
+        ? ERROR_UPDATE_MESSAGE
+        : ERROR_CREATE_MESSAGE;
+
+      action({ ...data, id: currentData?.id })
+        .then(() => {
+          setAlert({ message: successMessage, type: 'success' });
           setIsSubmitting(false);
           setIsModalOpen(false);
+          if (!currentData) {
+            setCurrentPage(
+              Math.ceil((filteredAndSortedUsers.length + 1) / ITEMS_PER_PAGE)
+            );
+          }
         })
-        .catch((error) => {
-          setAlert({ message: 'Failed to update sección', type: 'error' });
+        .catch(() => {
+          setAlert({ message: errorMessage, type: 'error' });
         });
-    } else {
-      createSection(data)
-        .then((result) => {
-          setAlert({
-            message: 'Sección registrado exitosamente',
-            type: 'success',
-          });
-          setCurrentPage(
-            Math.ceil((filteredAndSortedUsers.length + 1) / ITEMS_PER_PAGE)
-          );
-          setIsSubmitting(false);
-          setIsModalOpen(false);
-        })
-        .catch((error) => {
-          setAlert({ message: 'Failed to save Sección', type: 'error' });
-        });
-    }
-  };
+    },
+    [currentData, createSection, updateSection, filteredAndSortedUsers.length]
+  );
 
-  const handleSort = (field: SortField) => {
-    if (field === sortField) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortField(field);
-      setSortOrder('asc');
-    }
-  };
+  const handleSort = useCallback(
+    (field: SortField) => {
+      if (field === sortField) {
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+      } else {
+        setSortField(field);
+        setSortOrder('asc');
+      }
+    },
+    [sortField, sortOrder]
+  );
 
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     setAppliedSearchTerm(searchTerm);
     setCurrentPage(1);
-  };
+  }, [searchTerm]);
 
-  const handleClearSearch = () => {
+  const handleClearSearch = useCallback(() => {
     setSearchTerm('');
     setAppliedSearchTerm('');
     setCurrentPage(1);
-  };
+  }, []);
 
-  const goToPage = (page: number) => {
+  const goToPage = useCallback((page: number) => {
     setCurrentPage(page);
-  };
+  }, []);
 
   return {
     handleSearch,

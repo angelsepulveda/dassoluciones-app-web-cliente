@@ -4,6 +4,7 @@ import {
   Button,
   ConfirmationModal,
   DataGrid,
+  LoadingState,
   Modal,
   PaginationButtons,
   SearchGrid,
@@ -11,10 +12,16 @@ import {
   TColumn,
 } from '@/components';
 import { TSection } from '@/models';
-import { Edit, Loader2, Plus, Trash2 } from 'lucide-react';
+import { Edit, Plus, Trash2 } from 'lucide-react';
 import { SectionForm } from '../SectionForm';
 import { useSectionManagement } from './useSectionManagement';
 import { SectionDataGridMobile } from './partials';
+import {
+  ERROR_LOADING_SECTIONS,
+  LOADING_SECTIONS_MESSAGE,
+  REGISTER_SECTION,
+  SECTIONS_TITLE,
+} from '../../utils';
 
 export const SectionManagement = () => {
   const {
@@ -48,15 +55,6 @@ export const SectionManagement = () => {
     setIsModalOpen,
   } = useSectionManagement();
 
-  const renderLoadingState = () => (
-    <div className="flex justify-center items-center py-8">
-      <Loader2 className="animate-spin h-8 w-8 text-blue-500" />
-      <span className="ml-2 text-gray-600 dark:text-gray-400">
-        Cargando secciones...
-      </span>
-    </div>
-  );
-
   const columns: TColumn<TSection>[] = [
     { key: 'name', header: 'Nombre' },
     { key: 'key', header: 'Key' },
@@ -88,7 +86,7 @@ export const SectionManagement = () => {
   if (isError) {
     return (
       <div className="text-center py-8 text-red-500">
-        Error en carga de secciones
+        {ERROR_LOADING_SECTIONS}
       </div>
     );
   }
@@ -105,10 +103,10 @@ export const SectionManagement = () => {
 
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
-          Secciones
+          {SECTIONS_TITLE}
         </h2>
         <Button onClick={handleCreate} icon={<Plus size={18} />}>
-          Registar sección
+          {REGISTER_SECTION}
         </Button>
       </div>
       <SearchGrid
@@ -119,7 +117,7 @@ export const SectionManagement = () => {
         setSearchTerm={setSearchTerm}
       />
       {isLoading ? (
-        renderLoadingState()
+        <LoadingState message={LOADING_SECTIONS_MESSAGE} />
       ) : (
         <>
           {/* DataGrid para pantallas más grandes */}
@@ -149,7 +147,7 @@ export const SectionManagement = () => {
       )}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
-          {currentData ? 'Editar seccion' : 'Registrar nuevo seccion'}
+          {currentData ? 'Editar sección' : 'Registrar nueva sección'}
         </h2>
         <SectionForm
           section={currentData}
