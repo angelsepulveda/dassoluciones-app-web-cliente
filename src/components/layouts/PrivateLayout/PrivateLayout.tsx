@@ -1,8 +1,9 @@
 'use client';
 
-import { ThemeProvider } from '@/themes';
+import { ThemeProvider } from '@/themes/ThemeProvider';
 import { ReactNode, useState } from 'react';
-import { Sidebar, TopBar } from './partials';
+import { Sidebar } from './partials/Sidebar/Sidebar';
+import { TopBar } from './partials/Topbar/Topbar';
 
 type TPrivateLayoutProps = {
   children: ReactNode;

@@ -1,4 +1,3 @@
-import { JSX } from 'react';
 import { Button } from './Button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 

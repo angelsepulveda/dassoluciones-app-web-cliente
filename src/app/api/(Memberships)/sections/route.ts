@@ -1,5 +1,5 @@
-import { SectionApiService } from "@/apiServices";
-import { TRegisterSection, TSection } from "@/models";
+import { SectionApiService } from "@/apiServices/memberships/sectionApiService";
+import { TRegisterSection, TSection } from "@/models/memberships/section";
 import { NextResponse } from "next/server";
 
 const sectionApiService = new SectionApiService()

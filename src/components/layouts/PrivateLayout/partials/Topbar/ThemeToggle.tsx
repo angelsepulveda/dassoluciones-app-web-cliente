@@ -16,6 +16,8 @@ export const ThemeToggle = () => {
     return null;
   }
 
+  console.log('theme', theme);
+
   return (
     <button
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}

@@ -1,7 +1,8 @@
 'use client';
 
-import { Button, Input } from '@/components';
-import { TSection } from '@/models';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { TSection } from '@/models/memberships/section';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 

@@ -1,4 +1,4 @@
-import { TAction, TRegisterAction } from "@/models"
+import { TAction, TRegisterAction } from "@/models/memberships/action"
 
 const API_URL = "/api/actions"
 

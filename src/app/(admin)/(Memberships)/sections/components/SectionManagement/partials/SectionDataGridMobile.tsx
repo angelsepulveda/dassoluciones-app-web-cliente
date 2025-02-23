@@ -1,5 +1,5 @@
-import { NoDataMessage } from '@/components';
-import { TSection } from '@/models';
+import { NoDataMessage } from '@/components/ui/DataGrid/NoDataMessage';
+import { TSection } from '@/models/memberships/section';
 import { JSX } from 'react';
 
 type TSectionDataGridMobileProps = {

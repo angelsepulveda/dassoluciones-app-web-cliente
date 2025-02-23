@@ -1,5 +1,5 @@
-import { NoDataMessage } from '@/components';
-import { TAction } from '@/models';
+import { NoDataMessage } from '@/components/ui/DataGrid/NoDataMessage';
+import { TAction } from '@/models/memberships/action';
 import { JSX } from 'react';
 
 type TActionDataGridMobileProps = {

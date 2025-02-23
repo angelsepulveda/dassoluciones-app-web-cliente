@@ -9,19 +9,16 @@ import {
   ChevronRight,
   Loader2,
 } from 'lucide-react';
-import {
-  Button,
-  ConfirmationModal,
-  DataGrid,
-  Modal,
-  NoDataMessage,
-  SearchGrid,
-  SideAlert,
-  TColumn,
-} from '@/components';
-import { TModule } from '@/models';
+
 import ModuleForm from './ModuleForm';
-import { useModules } from '@/hooks';
+import { useModules } from '@/hooks/memberships/useModules';
+import { TModule } from '@/models/memberships/module';
+import { DataGrid, NoDataMessage, TColumn } from '@/components/ui/DataGrid';
+import { Button } from '@/components/ui/Button';
+import { SideAlert } from '@/components/ui/SideAlert';
+import { SearchGrid } from '@/components/ui/SearchGrid';
+import { Modal } from '@/components/ui/Modal';
+import { ConfirmationModal } from '@/components/ui/ConfirmationModal';
 
 interface AlertState {
   message: string;

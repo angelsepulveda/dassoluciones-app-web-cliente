@@ -1,7 +1,7 @@
-import { useSections } from '@/hooks';
-import { TRegisterSection, TSection } from '@/models';
+import { useSections } from '@/hooks/memberships/useSections';
+import { TRegisterSection, TSection } from '@/models/memberships/section';
 import { AlertState, SortField, SortOrder } from '@/types';
-import { ITEMS_PER_PAGE } from '@/utils';
+import { ITEMS_PER_PAGE } from '@/utils/constants';
 import { useMemo, useState, useCallback } from 'react';
 import {
   ERROR_CREATE_MESSAGE,
@@ -10,7 +10,7 @@ import {
   SUCCESS_CREATE_MESSAGE,
   SUCCESS_DELETE_MESSAGE,
   SUCCESS_UPDATE_MESSAGE,
-} from '../../utils';
+} from '../../utils/constants';
 
 export function useSectionManagement() {
   const {

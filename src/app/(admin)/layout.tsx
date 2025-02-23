@@ -1,4 +1,4 @@
-import { PrivateLayout } from '@/components';
+import { PrivateLayout } from '@/components/layouts/PrivateLayout/PrivateLayout';
 
 export default function AdminLayout({
   children,

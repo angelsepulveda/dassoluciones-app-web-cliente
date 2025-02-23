@@ -1,5 +1,5 @@
 import { BaseService } from "@/lib/baseService"
-import { TAction, TRegisterAction } from "@/models"
+import { TAction, TRegisterAction } from "@/models/memberships/action"
 
 const API_BASE_URL = process.env.EXTERNAL_API_URL || "https://localhost:7210/api"
 

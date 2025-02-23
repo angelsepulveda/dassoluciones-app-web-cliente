@@ -1,5 +1,5 @@
-import { ActionApiService } from "@/apiServices";
-import { TAction, TRegisterAction } from "@/models";
+import { ActionApiService } from "@/apiServices/memberships/actionApiService";
+import { TAction, TRegisterAction } from "@/models/memberships/action";
 import { NextResponse } from "next/server";
 
 const actionApiService = new ActionApiService()

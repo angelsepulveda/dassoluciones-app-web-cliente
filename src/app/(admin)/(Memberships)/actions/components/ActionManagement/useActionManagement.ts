@@ -1,5 +1,5 @@
-import { useActions } from "@/hooks";
-import { TAction, TRegisterAction } from "@/models";
+import { useActions } from "@/hooks/memberships/useActions";
+import { TAction, TRegisterAction } from "@/models/memberships/action";
 import { AlertState, SortField, SortOrder } from "@/types";
 import { useMemo, useState } from "react";
 

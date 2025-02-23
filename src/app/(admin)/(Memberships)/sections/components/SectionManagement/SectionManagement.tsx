@@ -1,27 +1,23 @@
 'use client';
 
-import {
-  Button,
-  ConfirmationModal,
-  DataGrid,
-  LoadingState,
-  Modal,
-  PaginationButtons,
-  SearchGrid,
-  SideAlert,
-  TColumn,
-} from '@/components';
-import { TSection } from '@/models';
 import { Edit, Plus, Trash2 } from 'lucide-react';
 import { SectionForm } from '../SectionForm';
 import { useSectionManagement } from './useSectionManagement';
-import { SectionDataGridMobile } from './partials';
 import {
   ERROR_LOADING_SECTIONS,
   LOADING_SECTIONS_MESSAGE,
   REGISTER_SECTION,
   SECTIONS_TITLE,
-} from '../../utils';
+} from '../../utils/constants';
+import { SectionDataGridMobile } from './partials/SectionDataGridMobile';
+import { TSection } from '@/models/memberships/section';
+import { Button } from '@/components/ui/Button';
+import { SearchGrid } from '@/components/ui/SearchGrid';
+import { DataGrid, LoadingState, TColumn } from '@/components/ui/DataGrid';
+import { PaginationButtons } from '@/components/ui/PaginationButtons';
+import { Modal } from '@/components/ui/Modal';
+import { ConfirmationModal } from '@/components/ui/ConfirmationModal';
+import { SideAlert } from '@/components/ui/SideAlert';
 
 export const SectionManagement = () => {
   const {

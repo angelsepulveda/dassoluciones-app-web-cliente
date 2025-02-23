@@ -1,4 +1,4 @@
-import { TRegisterSection, TSection } from "@/models"
+import { TRegisterSection, TSection } from "@/models/memberships/section"
 
 const API_URL = "/api/sections"
 

@@ -1,7 +1,7 @@
 import useSWR from "swr"
 
-import { TModule } from "@/models"
-import { moduleService } from "@/services"
+import { moduleService } from "@/services/memberships/modulesService"
+import { TModule } from "@/models/memberships/module"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 

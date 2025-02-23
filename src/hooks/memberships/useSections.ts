@@ -1,5 +1,5 @@
-import { TRegisterSection, TSection } from "@/models"
-import { sectionService } from "@/services"
+import { TRegisterSection, TSection } from "@/models/memberships/section"
+import { sectionService } from "@/services/memberships/sectionService"
 import useSWR from "swr"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())

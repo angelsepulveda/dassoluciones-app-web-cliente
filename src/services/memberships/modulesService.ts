@@ -1,4 +1,4 @@
-import { TModule } from "@/models"
+import { TModule } from "@/models/memberships/module"
 
 const API_URL = "/api/modules"
 

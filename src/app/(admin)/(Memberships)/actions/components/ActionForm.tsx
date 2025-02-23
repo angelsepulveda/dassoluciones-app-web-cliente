@@ -1,5 +1,6 @@
-import { Button, Input } from '@/components';
-import { TAction } from '@/models';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { TAction } from '@/models/memberships/action';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 

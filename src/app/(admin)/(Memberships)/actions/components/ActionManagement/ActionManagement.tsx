@@ -2,19 +2,16 @@
 
 import { Edit, Loader2, Plus, Trash2 } from 'lucide-react';
 import { useActionManagement } from './useActionManagement';
-import { TAction } from '@/models';
-import {
-  Button,
-  ConfirmationModal,
-  DataGrid,
-  Modal,
-  PaginationButtons,
-  SearchGrid,
-  SideAlert,
-  TColumn,
-} from '@/components';
-import { ActionDataGridMobile } from './partials';
 import { ActionForm } from '../ActionForm';
+import { ActionDataGridMobile } from './partials/ActionDataGridMobile';
+import { TAction } from '@/models/memberships/action';
+import { Button } from '@/components/ui/Button';
+import { SideAlert } from '@/components/ui/SideAlert';
+import { SearchGrid } from '@/components/ui/SearchGrid';
+import { DataGrid, TColumn } from '@/components/ui/DataGrid';
+import { PaginationButtons } from '@/components/ui/PaginationButtons';
+import { Modal } from '@/components/ui/Modal';
+import { ConfirmationModal } from '@/components/ui/ConfirmationModal';
 
 export const ActionManagement = () => {
   const {

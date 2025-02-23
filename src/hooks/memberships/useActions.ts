@@ -1,5 +1,5 @@
-import { TAction, TRegisterAction } from "@/models"
-import { actionService } from "@/services"
+import { TAction, TRegisterAction } from "@/models/memberships/action"
+import { actionService } from "@/services/memberships/actionService"
 import useSWR from "swr"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())

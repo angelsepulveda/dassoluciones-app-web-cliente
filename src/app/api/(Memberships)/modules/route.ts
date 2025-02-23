@@ -1,5 +1,5 @@
-import { ModuleApiService } from "@/apiServices"
-import { TModule } from "@/models"
+import { ModuleApiService } from "@/apiServices/memberships/membershipApiService"
+import { TModule } from "@/models/memberships/module"
 import { NextResponse } from "next/server"
 
 const moduleApiService = new ModuleApiService()
